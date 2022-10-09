@@ -56,8 +56,8 @@ class TicTacToeTestCase(unittest.TestCase):
             [' ', ' ', ' '],
             [' ', ' ', ' ']
         ]
-        param_list = [(["A", "1"], (0, 0, None)),
-                      (["c", "3"], (2, 2, None))]
+        param_list = [(["A", "1"], (0, 0)),
+                      (["c", "3"], (2, 2))]
         for input_data, expected_output in param_list:
             with self.subTest():
                 self.assertEqual(game.validate_input(input_data), expected_output)
@@ -71,21 +71,23 @@ class TicTacToeTestCase(unittest.TestCase):
             [' ', 'x', ' ']
         ]
         param_list = [([],
-                       (-1, -1, 'Error: Position should consist of the two symbols in format A1')),
+                       'Error: Position should consist of the two symbols in format A1'),
                       (["c"],
-                       (-1, -1, 'Error: Position should consist of the two symbols in format A1')),
+                       'Error: Position should consist of the two symbols in format A1'),
                       (["c", "5", "a"],
-                       (-1, -1, 'Error: Position should consist of the two symbols in format A1')),
-                      (["я", "1"], (-1, -1, 'Error: Cell position is out of range!')),
-                      (["c", "4"], (-1, -1, 'Error: Cell position is out of range!')),
+                       'Error: Position should consist of the two symbols in format A1'),
+                      (["я", "1"], 'Error: Cell position is out of range!'),
+                      (["c", "4"], 'Error: Cell position is out of range!'),
                       (["1", "2"],
-                       (-1, -1, 'Error: First symbol of the position should be a letter')),
+                       'Error: First symbol of the position should be a letter'),
                       (["c", "b"],
-                       (-1, -1, 'Error: Second symbol of the position should be a number')),
-                      (["c", "2"], (-1, -1, 'Error: This position is already filled!'))]
+                       'Error: Second symbol of the position should be a number'),
+                      (["c", "2"], 'Error: This position is already filled!')]
         for input_data, expected_output in param_list:
             with self.subTest():
-                self.assertEqual(game.validate_input(input_data), expected_output)
+                with self.assertRaises(ValueError) as err:
+                    game.validate_input(input_data)
+                self.assertEqual(str(err.exception), expected_output)
 
     @patch('builtins.print')
     def test_draw_condition(self, mock_print):

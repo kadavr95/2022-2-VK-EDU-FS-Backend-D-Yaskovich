@@ -37,38 +37,37 @@ class TicTacToeGame:
         """Handler of the players moves"""
         while True:
             next_move = list(input())
-            row, column, err = self.validate_input(next_move)
-            if err is not None:
-                print(err)
-                continue
+            try:
+                row, column = self.validate_input(next_move)
+                if self.turn_number % 2 == 0:
+                    self.board[row][column] = 'x'
+                else:
+                    self.board[row][column] = 'o'
 
-            if self.turn_number % 2 == 0:
-                self.board[row][column] = 'x'
-            else:
-                self.board[row][column] = 'o'
-
-            self.show_board()
-            self.turn_number += 1
-            if self.check_winner(row, column):
-                break
+                self.show_board()
+                self.turn_number += 1
+                if self.check_winner(row, column):
+                    break
+            except ValueError as err:
+                print(str(err))
 
     def validate_input(self, next_move):
         """Validation of the input correctness"""
         if len(next_move) != 2:
-            return -1, -1, 'Error: Position should consist of the two symbols in format A1'
+            raise ValueError('Error: Position should consist of the two symbols in format A1')
         if not next_move[0].isalpha():
-            return -1, -1, 'Error: First symbol of the position should be a letter'
+            raise ValueError('Error: First symbol of the position should be a letter')
         if not next_move[1].isdecimal():
-            return -1, -1, 'Error: Second symbol of the position should be a number'
+            raise ValueError('Error: Second symbol of the position should be a number')
 
         row = ord(next_move[0].upper()) - ord('A')
         column = int(next_move[1]) - 1
 
         if not (0 <= row <= 2 and 0 <= column <= 2):
-            return -1, -1, 'Error: Cell position is out of range!'
+            raise ValueError('Error: Cell position is out of range!')
         if self.board[row][column] != ' ':
-            return -1, -1, 'Error: This position is already filled!'
-        return row, column, None
+            raise ValueError('Error: This position is already filled!')
+        return row, column
 
     def start_game(self):
         """Game initialization"""
