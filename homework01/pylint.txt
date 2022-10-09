@@ -1,5 +1,3 @@
-************* Module tests.tictactoe_test
-homework01\tests\tictactoe_test.py:5:0: E0401: Unable to import 'homework01.tictactoe' (import-error)
 
-------------------------------------------------------------------
-Your code has been rated at 9.51/10 (previous run: 9.51/10, +0.00)
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
